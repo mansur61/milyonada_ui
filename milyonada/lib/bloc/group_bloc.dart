@@ -15,21 +15,21 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
           description: 'Fotoğraf tutkunları için bir topluluk',
           members: 1254,
           imageUrl: 'https://picsum.photos/150?random=2', // Fotoğrafçılık
-          buttonText: 'Katıl',
+          buttonText: 'Katıl', category: '', privacy: '',
         ),
         GroupModel(
           name: 'Kitap Kulübü',
           description: 'Romanlar ve daha fazlası üzerine tartışmalar',
           members: 834,
           imageUrl: 'https://picsum.photos/150?random=1', // Kitap Kulübü
-          buttonText: 'Katıl',
+          buttonText: 'Katıl',category: '', privacy: ''
         ),
         GroupModel(
           name: 'Yazılım Mühendisleri',
           description: 'Yazılım geliştirme profesyonelleri grubu',
           members: 2310,
           imageUrl: 'https://picsum.photos/150?random=3', // Yazılım
-          buttonText: 'Başvur',
+          buttonText: 'Başvur',category: '', privacy: ''
         ),
       ]));
     });
