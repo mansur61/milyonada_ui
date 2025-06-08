@@ -6,6 +6,7 @@ import 'bloc/member_management/member_management_event.dart';
 import 'screen/group_create_screen.dart';
 import 'screen/group_detail_screen.dart';
 import 'screen/group_management_screen.dart';
+import 'screen/group_share_screen.dart'; 
 import 'screen/member_management_screen.dart'; 
 
 void main() {
@@ -31,8 +32,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => 
           //GroupDetailScreen()
-          GroupManagementScreen(),
-           
+          //GroupManagementScreen(),
+           GroupShareScreen(),
           '/create': (context) => const GroupCreateScreen(),
           // diğer sayfalar buraya eklenebilir
         },
