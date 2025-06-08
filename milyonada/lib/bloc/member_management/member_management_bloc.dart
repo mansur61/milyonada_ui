@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/member.dart'; 
-import 'uye_event.dart';
-import 'uye_state.dart';
+import 'member_management_event.dart';
+import 'member_management_state.dart';
 
 class MemberBloc extends Bloc<MemberEvent, MemberState> {
   MemberBloc() : super(MemberInitial()) {

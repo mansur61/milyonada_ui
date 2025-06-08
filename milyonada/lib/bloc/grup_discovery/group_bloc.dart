@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../model/group_model.dart';
+import '../../model/group_model.dart';
 
 part 'group_event.dart';
 part 'group_state.dart';
