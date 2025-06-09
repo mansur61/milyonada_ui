@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/grup_discovery/group_bloc.dart'; 
 import 'bloc/member_management/member_management_bloc.dart';
 import 'bloc/member_management/member_management_event.dart';
+import 'screen/form_screen.dart';
 import 'screen/group_create_screen.dart';
 import 'screen/group_detail_screen.dart';
 import 'screen/group_management_screen.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => 
           //GroupDetailScreen()
           //GroupManagementScreen(),
-           GroupShareScreen(),
+           FormScreen(),
           '/create': (context) => const GroupCreateScreen(),
           // diğer sayfalar buraya eklenebilir
         },
