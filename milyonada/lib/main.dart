@@ -7,6 +7,7 @@ import 'screen/form_screen.dart';
 import 'screen/group_create_screen.dart';
 import 'screen/group_detail_screen.dart';
 import 'screen/group_management_screen.dart';
+import 'screen/group_profile_edit_screen.dart';
 import 'screen/group_share_screen.dart'; 
 import 'screen/member_management_screen.dart'; 
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => 
           //GroupDetailScreen()
           //GroupManagementScreen(),
-           FormScreen(),
+           GroupProfileEditScreen(),
           '/create': (context) => const GroupCreateScreen(),
           // diğer sayfalar buraya eklenebilir
         },
