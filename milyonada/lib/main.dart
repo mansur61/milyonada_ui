@@ -9,7 +9,8 @@ import 'screen/group_detail_screen.dart';
 import 'screen/group_management_screen.dart';
 import 'screen/group_profile_edit_screen.dart';
 import 'screen/group_share_screen.dart'; 
-import 'screen/member_management_screen.dart'; 
+import 'screen/member_management_screen.dart';
+import 'screen/profile_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => 
           //GroupDetailScreen()
           //GroupManagementScreen(),
-           GroupProfileEditScreen(),
+           ProfileScreen(),
           '/create': (context) => const GroupCreateScreen(),
           // diğer sayfalar buraya eklenebilir
         },
