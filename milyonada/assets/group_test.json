@@ -1,0 +1,87 @@
+[
+  {
+    "groupId": "grp001",
+    "name": "Fotoğrafçılık Kulübü",
+    "description": "Fotoğraf tutkunları için bir topluluk",
+    "groupType":  " PUBLIC ",
+    "memberStatus": "  REQUESTED ",
+    "imageUrl": "https://picsum.photos/150?random=2",
+    "isJoined": true,
+    "category": {
+      "Id": 1,
+      "name": "Photography",
+      "description": "Fotoğrafçılığa ilgi duyanlar için"
+    },
+    "members": [
+      {
+        "memberId": "mem003",
+        "name": "Veli Can",
+        "email": "veli@example.com",
+        "profileImageUrl": "https://picsum.photos/100?random=103",
+        "role": "admin"
+      },
+      {
+        "memberId": "mem004",
+        "name": "Ali Can",
+        "email": "ali@example.com",
+        "profileImageUrl": "https://picsum.photos/100?random=105",
+        "role": "admin"
+      },
+      {
+        "memberId": "mem005",
+        "name": "Zeynep Kaya",
+        "email": "zeynep@example.com",
+        "profileImageUrl": "https://picsum.photos/100?random=104",
+        "role": "member"
+      }
+    ],
+    "posts": [
+      {
+        "postId": "pst003",
+        "content": "Apple’ın yeni M3 çipi hakkındaki düşünceleriniz nedir?",
+        "timestamp": "2025-06-28T09:30:00Z",
+        "authorId": "mem005"
+      },
+      {
+        "postId": "pst004",
+        "content": "Yeni çıkan ChatGPT-5 deneyimlerini paylaşalım mı?",
+        "timestamp": "2025-06-27T18:00:00Z",
+        "authorId": "mem004"
+      }
+    ]
+  },
+  {
+    "groupId": "grp002",
+    "name": "Kitap Kulübü",
+    "description": "Romanlar ve daha fazlası üzerine tartışmalar",
+     "groupType": " PUBLIC | HIDDEN",
+   "memberStatus": " JOINED ",
+
+    "imageUrl": "https://picsum.photos/150?random=1",
+    "isJoined": false,
+    "category": {
+      "Id": 2,
+      "name": "Books",
+      "description": "Kitap okumayı sevenler için"
+    },
+    "members": [],
+    "posts": []
+  },
+  {
+    "groupId": "grp003",
+    "name": "Yazılım Mühendisleri",
+    "description": "Yazılım geliştirme profesyonelleri grubu",
+    "imageUrl": "https://picsum.photos/150?random=3",
+     "groupType": "PRIVATE ",
+   "memberStatus": "INVITED",
+
+    "isJoined": false,
+    "category": {
+      "Id": 3,
+      "name": "Software",
+      "description": "Yazılım geliştirme üzerine tartışmalar"
+    },
+    "members": [],
+    "posts": []
+  }
+]
