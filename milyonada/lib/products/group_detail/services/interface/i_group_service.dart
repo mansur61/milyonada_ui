@@ -1,5 +1,10 @@
+ 
+import '../../model/group.dart';
+import '../../model/service_result.dart';
+
 abstract class IGroupService {
-  Future<void> createGroup(String name);
+  Future<ServiceResult<bool>> joinGroup(Group group);
   Future<void> deleteGroup(String groupId);
-  Future<List<String>> getGroups();
+  Future<ServiceResult<bool>> leaveGroup(Group group);
+  Future<ServiceResult<List<Group>>> getGroups();
 }

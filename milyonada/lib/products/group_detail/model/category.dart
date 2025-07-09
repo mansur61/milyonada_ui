@@ -1,47 +1,25 @@
-import 'dart:convert';
-
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Category {
-  final int Id;
+  final int id;
   final String name;
   final String description;
+
   Category({
-    required this.Id,
+    required this.id,
     required this.name,
     required this.description,
   });
- 
 
-
-  Category copyWith({
-    int? Id,
-    String? name,
-    String? description,
-  }) {
+  factory Category.fromMap(Map<String, dynamic> json) {
     return Category(
-      Id: Id ?? this.Id,
-      name: name ?? this.name,
-      description: description ?? this.description,
+      id: json['id'],
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'Id': Id,
-      'name': name,
-      'description': description,
-    };
-  }
-
-  factory Category.fromMap(Map<String, dynamic> map) {
-    return Category(
-      Id: map['Id'] as int,
-      name: map['name'] as String,
-      description: map['description'] as String,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Category.fromJson(String source) => Category.fromMap(json.decode(source) as Map<String, dynamic>);
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'description': description,
+      };
 }

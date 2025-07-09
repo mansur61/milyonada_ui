@@ -1,0 +1,2 @@
+
+enum MemberStatus { INVITED, JOINED, REQUESTED, NONE, BLOCKED }

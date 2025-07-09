@@ -1,31 +1,29 @@
-import 'group_mmeber.dart';
-import 'group_post.dart';
-import 'category.dart';  // Kategori modelin
+import '../../utils/group_type.dart';
+import '../../utils/member_status.dart';
+import 'category.dart';  
+import 'mederator.dart'; 
 
-enum GroupType { PRIVATE, PUBLIC, HIDDEN }
-enum MemberStatus { INVITED, JOINED, REQUESTED, NONE, BLOCKED }
 
 class Group {
-  final String groupId;
+  final int? id;
   final String name;
   final String description;
-  final String imageUrl; 
+  final String imageUrl;
+  final String? coverUrl;
   final Category category;
-  final List<GroupMember> members;
-  final List<GroupPost> posts;
-
+  final List<GroupMederator> admins;
   final GroupType? groupType;
   final MemberStatus? memberStatus;
   final int? memberCount;
 
   Group({
-    required this.groupId,
+    this.id,
     required this.name,
     required this.description,
-    required this.imageUrl, 
+    required this.imageUrl,
+    this.coverUrl,
     required this.category,
-    required this.members,
-    required this.posts,
+    required this.admins,
     this.groupType,
     this.memberStatus,
     this.memberCount,
@@ -33,8 +31,7 @@ class Group {
 
   factory Group.fromJson(Map<String, dynamic> json) {
     GroupType? parseGroupType(String? value) {
-      if (value == null) return null;
-      switch (value.toUpperCase()) {
+      switch (value?.toUpperCase()) {
         case 'PRIVATE':
           return GroupType.PRIVATE;
         case 'PUBLIC':
@@ -47,8 +44,7 @@ class Group {
     }
 
     MemberStatus? parseMemberStatus(String? value) {
-      if (value == null) return null;
-      switch (value.toUpperCase()) {
+      switch (value?.toUpperCase()) {
         case 'INVITED':
           return MemberStatus.INVITED;
         case 'JOINED':
@@ -65,35 +61,60 @@ class Group {
     }
 
     return Group(
-      groupId: json['groupId'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
-      imageUrl: json['imageUrl'] as String, 
+      id: json['id'],
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      coverUrl: json['coverUrl'],
       category: Category.fromMap(json['category']),
-      members: (json['members'] as List<dynamic>)
-          .map((e) => GroupMember.fromjSON(e))
-          .toList(),
-      posts: (json['posts'] as List<dynamic>)
-          .map((e) => GroupPost.fromjSON(e))
+      admins: (json['admins'] as List<dynamic>)
+          .map((e) => GroupMederator.fromJson(e))
           .toList(),
       groupType: parseGroupType(json['groupType']),
       memberStatus: parseMemberStatus(json['memberStatus']),
-      memberCount: json['memberCount'] != null
-          ? int.tryParse(json['memberCount'].toString())
-          : null,
+      memberCount: json['memberCount'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'groupId': groupId,
+        'id': id,
         'name': name,
         'description': description,
-        'imageUrl': imageUrl, 
+        'imageUrl': imageUrl,
+        'coverUrl': coverUrl,
         'category': category.toMap(),
-        'members': members.map((e) => e.toMap()).toList(),
-        'posts': posts.map((e) => e.toMap()).toList(),
+        'admins': admins.map((e) => e.toJson()).toList(),
         'groupType': groupType?.name,
         'memberStatus': memberStatus?.name,
         'memberCount': memberCount,
       };
+
+
+ Group copyWith({
+    int? id,
+    String? name,
+    String? description,
+    String? imageUrl,
+    String? coverUrl,
+    Category? category,
+    List<GroupMederator>? members,
+    GroupType? groupType,
+    MemberStatus? memberStatus,
+    int? memberCount,
+  }) {
+    return Group(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
+      coverUrl: coverUrl ?? this.coverUrl,
+      category: category ?? this.category,
+      admins: members ?? this.admins,
+      groupType: groupType ?? this.groupType,
+      memberStatus: memberStatus ?? this.memberStatus,
+      memberCount: memberCount ?? this.memberCount,
+    );
+  }
 }
+
+

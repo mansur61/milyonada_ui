@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/group_cubit.dart';
+import '../cubit/group_member_cubit.dart';
 import '../cubit/group_state.dart';
 import '../widgets/group_member_bottom_sheet.dart';
 
@@ -47,8 +48,8 @@ class GroupDetailScreen extends StatelessWidget {
 
                 case GroupStatus.success:
                   final group = state.group!;
-                  final moderators = group.members
-                      .where((m) => m.role.toLowerCase() == 'admin')
+                  final moderators = group.admins
+                      .where((m) => m.memberRole.toLowerCase() == 'admin')
                       .toList();
 
                   return SingleChildScrollView(
@@ -67,14 +68,14 @@ class GroupDetailScreen extends StatelessWidget {
                               ),
                             ),
                             // Grup Detay Başlığı
-                            Positioned(
+                            const Positioned(
                               top: 16,
                               left: 16,
                               child: Row(
                                 children: [
-                                  const BackButton(color: Colors.white),
-                                  const SizedBox(width: 8),
-                                  const Text(
+                                  BackButton(color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text(
                                     'Grup Detay',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -137,8 +138,38 @@ class GroupDetailScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('${group.members.length} üye'),
+                                  Text('${group.admins.length} üye'),
                                   TextButton(
+                                    onPressed: () {
+                                      final cubit =
+                                          context.read<GroupMemberCubit>();
+                                      cubit.fetchMembers(group.id ??
+                                          0); 
+
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16)),
+                                        ),
+                                        builder: (context) =>
+                                            const GroupMemberBottomSheet(
+                                          members: [],
+                                        ), // veriyi içinde alacak
+                                      );
+                                    },
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 16),
+                                      textStyle: const TextStyle(fontSize: 14),
+                                    ),
+                                    child: const Text('Üyeleri Gör'),
+                                  )
+
+                                  /*  TextButton(
                                     onPressed: () {
                                       showModalBottomSheet(
                                         context: context,
@@ -149,7 +180,7 @@ class GroupDetailScreen extends StatelessWidget {
                                         ),
                                         builder: (context) =>
                                             GroupMemberBottomSheet(
-                                                members: group.members),
+                                                members: group.admins),
                                       );
                                     },
                                     style: TextButton.styleFrom(
@@ -161,7 +192,7 @@ class GroupDetailScreen extends StatelessWidget {
                                           const TextStyle(fontSize: 14),
                                     ),
                                     child: const Text('Üyeleri Gör'),
-                                  ),
+                                  ),*/
                                 ],
                               ),
 
@@ -181,8 +212,7 @@ class GroupDetailScreen extends StatelessWidget {
                                     foregroundColor: Colors.white,
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 16),
-                                    textStyle:
-                                        const TextStyle(fontSize: 16),
+                                    textStyle: const TextStyle(fontSize: 16),
                                   ),
                                   child: state.isLoading
                                       ? const SizedBox(
@@ -193,7 +223,9 @@ class GroupDetailScreen extends StatelessWidget {
                                             strokeWidth: 2,
                                           ),
                                         )
-                                      : Text(state.isJoined ? 'Katıldın' : 'Katıl'),
+                                      : Text(state.isJoined
+                                          ? 'Katıldın'
+                                          : 'Katıl'),
                                 ),
                               ),
 
@@ -219,8 +251,8 @@ class GroupDetailScreen extends StatelessWidget {
                                       final mod = moderators[index];
                                       return CircleAvatar(
                                         radius: 24,
-                                        backgroundImage:
-                                            NetworkImage(mod.profileImageUrl),
+                                        backgroundImage: NetworkImage(
+                                            mod.company.profileImage),
                                       );
                                     },
                                   ),
