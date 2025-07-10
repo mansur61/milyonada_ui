@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../utils/member_status.dart';
+import '../cubit/expandable_text_cubit.dart';
 import '../cubit/group_cubit.dart';
 import '../cubit/group_member_cubit.dart';
+import '../cubit/group_member_state.dart';
 import '../cubit/group_state.dart';
+import '../services/group_service.dart';
 import '../widgets/group_member_bottom_sheet.dart';
 
 class GroupDetailScreen extends StatelessWidget {
@@ -129,8 +133,55 @@ class GroupDetailScreen extends StatelessWidget {
                                 group.category.description,
                                 style: const TextStyle(color: Colors.grey),
                               ),
+
                               const SizedBox(height: 16),
-                              Text(group.description),
+                              //Text(group.description),
+                              BlocProvider(
+                                create: (_) => ExpandableTextCubit(),
+                                child: BlocBuilder<ExpandableTextCubit, bool>(
+                                  builder: (context, isExpanded) {
+                                    const maxCharLength = 30;
+                                    final fullText = group.description;
+                                    final showToggle =
+                                        fullText.length > maxCharLength;
+
+                                    final displayedText = isExpanded
+                                        ? fullText
+                                        : '${fullText.substring(0, maxCharLength)}...';
+
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          displayedText,
+                                          style: const TextStyle(
+                                              color: Colors.grey),
+                                        ),
+                                        if (showToggle)
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                foregroundColor: Colors
+                                                    .blue,  
+                                                backgroundColor: Colors
+                                                    .transparent, 
+                                              ),
+                                              onPressed: () => context
+                                                  .read<ExpandableTextCubit>()
+                                                  .toggle(),
+                                              child: Text(isExpanded
+                                                  ? 'Gizle'
+                                                  : 'Devamını Gör'),
+                                            ),
+                                          ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+
                               const SizedBox(height: 24),
 
                               // Üyeleri Gör Butonu
@@ -141,11 +192,6 @@ class GroupDetailScreen extends StatelessWidget {
                                   Text('${group.admins.length} üye'),
                                   TextButton(
                                     onPressed: () {
-                                      final cubit =
-                                          context.read<GroupMemberCubit>();
-                                      cubit.fetchMembers(group.id ??
-                                          0); 
-
                                       showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,
@@ -153,10 +199,36 @@ class GroupDetailScreen extends StatelessWidget {
                                           borderRadius: BorderRadius.vertical(
                                               top: Radius.circular(16)),
                                         ),
-                                        builder: (context) =>
-                                            const GroupMemberBottomSheet(
-                                          members: [],
-                                        ), // veriyi içinde alacak
+                                        builder: (context) {
+                                          return BlocProvider(
+                                            create: (_) =>
+                                                GroupMemberCubit(GroupService())
+                                                  ..fetchMembers(group.id ?? 0),
+                                            child: BlocBuilder<GroupMemberCubit,
+                                                GroupMemberState>(
+                                              builder: (context, state) {
+                                                if (state
+                                                    is GroupMemberLoading) {
+                                                  return const Center(
+                                                      child:
+                                                          CircularProgressIndicator());
+                                                } else if (state
+                                                    is GroupMemberLoaded) {
+                                                  return GroupMemberBottomSheet(
+                                                      members: state.members);
+                                                } else if (state
+                                                    is GroupMemberError) {
+                                                  return Center(
+                                                      child:
+                                                          Text(state.message));
+                                                } else {
+                                                  return const SizedBox
+                                                      .shrink();
+                                                }
+                                              },
+                                            ),
+                                          );
+                                        },
                                       );
                                     },
                                     style: TextButton.styleFrom(
@@ -167,32 +239,7 @@ class GroupDetailScreen extends StatelessWidget {
                                       textStyle: const TextStyle(fontSize: 14),
                                     ),
                                     child: const Text('Üyeleri Gör'),
-                                  )
-
-                                  /*  TextButton(
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(16)),
-                                        ),
-                                        builder: (context) =>
-                                            GroupMemberBottomSheet(
-                                                members: group.admins),
-                                      );
-                                    },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: Colors.blue,
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 12, horizontal: 16),
-                                      textStyle:
-                                          const TextStyle(fontSize: 14),
-                                    ),
-                                    child: const Text('Üyeleri Gör'),
-                                  ),*/
+                                  ),
                                 ],
                               ),
 
@@ -223,9 +270,10 @@ class GroupDetailScreen extends StatelessWidget {
                                             strokeWidth: 2,
                                           ),
                                         )
-                                      : Text(state.isJoined
-                                          ? 'Katıldın'
-                                          : 'Katıl'),
+                                      : Text(
+                                          _getButtonText(
+                                              state.group?.memberStatus),
+                                        ),
                                 ),
                               ),
 
@@ -270,5 +318,17 @@ class GroupDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getButtonText(MemberStatus? status) {
+    switch (status) {
+      case MemberStatus.REQUESTED:
+        return "İstek Gönderildi";
+      case MemberStatus.INVITED:
+      case MemberStatus.JOINED:
+        return "Katıldın";
+      default:
+        return "Katıl";
+    }
   }
 }

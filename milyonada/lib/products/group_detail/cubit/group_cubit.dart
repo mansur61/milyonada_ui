@@ -56,18 +56,50 @@ class GroupCubit extends Cubit<GroupState> {
 
     emit(state.copyWith(isLoading: true));
 
-    final result = state.isJoined
-        ? await Future.delayed(const Duration(seconds: 2)) //grpService.leaveGroup(state.group!)
-        : await grpService.joinGroup(state.group!);
+    final updatedGroup = state.group!.copyWith(
+      memberStatus: MemberStatus.REQUESTED,
+    );
 
-    if (result.success && result.data == true) {
-      emit(state.copyWith(
-        isJoined: !state.isJoined,
-        isLoading: false,
+    emit(state.copyWith(group: updatedGroup));
+
+    if (state.isJoined) {
+      await Future.delayed(const Duration(seconds: 5));
+      final leaveGroup = state.group!.copyWith(
+        memberStatus: MemberStatus.NONE,
+      );
+
+      emit(state.copyWith(group: leaveGroup
+      ,isJoined: true, isLoading: false,
+      
       ));
+      //grpService.leaveGroup(state.group!)
     } else {
-      debugPrint("Join/Leave failed: ${result.message}");
-      emit(state.copyWith(isLoading: false));
+      final result = await grpService.joinGroup(state.group!);
+
+      if (result.success && result.data == true) {
+
+        final invitedGroup = updatedGroup.copyWith(
+          memberStatus: MemberStatus.INVITED,
+        );
+
+        emit(state.copyWith(
+          group: invitedGroup,
+          isJoined: true,
+          isLoading: false,
+        ));
+      } else {
+        debugPrint("Join/Leave failed: ${result.message}");
+        emit(state.copyWith(isLoading: false));
+        
+        final leaveGroup = state.group!.copyWith(
+        memberStatus: MemberStatus.NONE,
+      );
+         emit(state.copyWith(
+          group:leaveGroup ,
+          isJoined: true,
+          isLoading: false,
+        ));
+      }
     }
   }
 }

@@ -8,7 +8,7 @@ import '../model/service_result.dart';
 
 class GroupService implements IGroupService {
   final Dio _dio = Dio(BaseOptions(baseUrl: 'http://16.170.81.49:3000'));
-
+  final _token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55X2lkIjoxMSwiaWF0IjoxNzUxMTk2Mzk1LCJleHAiOjE3NjE1NjQzOTV9.pGrnYXCWuqDiV8845AasA6SvHJ0Ae8d2obkObASo5fA";
   @override
   Future<ServiceResult<bool>> leaveGroup(Group group) async {
     try {
@@ -46,11 +46,15 @@ class GroupService implements IGroupService {
 
   @override
   Future<ServiceResult<bool>> joinGroup(Group group) async {
+    final grop = group.copyWith(id: 0);
     try {
       final response = await _dio.post(
         '/group/join',
-        data: group.toJson(),
-        options: Options(headers: {"x-app-version": "2.0.0"}),
+        data: grop.toJson(),
+        options: Options(headers: {
+          "x-app-version": "2.0.0",
+          "Authorization":  "Bearer $_token"
+        }),
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
