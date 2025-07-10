@@ -60,17 +60,20 @@ class GroupDetailScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // KAPAK FOTOĞRAFI + ÜSTTE BAŞLIK + SOL ALTA PROFİL
+                        // KAPAK FOTOĞRAFI + ÜSTTE BAŞLIK + SOL ALTA TAŞAN PROFİL
                         Stack(
+                          clipBehavior: Clip.none,
                           children: [
+                            // Kapak Fotoğrafı
                             SizedBox(
                               height: 280,
                               width: double.infinity,
                               child: Image.network(
-                                group.imageUrl,
+                                group.coverUrl ?? "",
                                 fit: BoxFit.cover,
                               ),
                             ),
+
                             // Grup Detay Başlığı
                             const Positioned(
                               top: 16,
@@ -96,17 +99,32 @@ class GroupDetailScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            // Profil Resmi
+
+                            // Profil Fotoğrafı - taşan şekilde
                             Positioned(
-                              bottom: 16,
+                              bottom:
+                                  -35, // Yüksekliğin yarısı kadar taşıyoruz (yarısı kapakta kalır)
                               left: 16,
-                              child: CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                  radius: 36,
-                                  backgroundImage: NetworkImage(
+                              child: Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 4,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Image.network(
                                     group.imageUrl,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -114,7 +132,7 @@ class GroupDetailScreen extends StatelessWidget {
                           ],
                         ),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 40),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -140,33 +158,32 @@ class GroupDetailScreen extends StatelessWidget {
                                 create: (_) => ExpandableTextCubit(),
                                 child: BlocBuilder<ExpandableTextCubit, bool>(
                                   builder: (context, isExpanded) {
-                                    const maxCharLength = 30;
-                                    final fullText = group.description;
-                                    final showToggle =
-                                        fullText.length > maxCharLength;
-
-                                    final displayedText = isExpanded
-                                        ? fullText
-                                        : '${fullText.substring(0, maxCharLength)}...';
+                                    final fullText = group.description +
+                                        group.description +
+                                        group.description;
 
                                     return Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          displayedText,
+                                          fullText,
+                                          maxLines: isExpanded ? null : 2,
+                                          overflow: isExpanded
+                                              ? TextOverflow.visible
+                                              : TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               color: Colors.grey),
                                         ),
-                                        if (showToggle)
+                                        if (_isTextTooLong(
+                                            fullText)) // kontrol fonksiyonu altta
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: TextButton(
                                               style: TextButton.styleFrom(
-                                                foregroundColor: Colors
-                                                    .blue,  
-                                                backgroundColor: Colors
-                                                    .transparent, 
+                                                foregroundColor: Colors.blue,
+                                                backgroundColor:
+                                                    Colors.transparent,
                                               ),
                                               onPressed: () => context
                                                   .read<ExpandableTextCubit>()
@@ -318,6 +335,20 @@ class GroupDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _isTextTooLong(String text) {
+    final span = TextSpan(
+      text: text,
+      style: const TextStyle(color: Colors.grey),
+    );
+    final tp = TextPainter(
+      text: span,
+      maxLines: 2,
+      textDirection: TextDirection.ltr,
+    );
+    tp.layout(maxWidth: 300); // Ekrana göre ayarla
+    return tp.didExceedMaxLines;
   }
 
   String _getButtonText(MemberStatus? status) {
