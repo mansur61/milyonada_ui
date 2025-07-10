@@ -1,0 +1,1 @@
+enum GroupStatus { initial, loading, success, failure }

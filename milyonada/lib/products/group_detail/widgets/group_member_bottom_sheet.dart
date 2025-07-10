@@ -1,44 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/group_member_cubit.dart';
-import '../cubit/group_member_state.dart'; 
+
+import '../model/group_mmeber.dart'; 
 
 class GroupMemberBottomSheet extends StatelessWidget {
-  const GroupMemberBottomSheet({super.key, required List members});
+  final List<GroupMember>? members;
+  final bool isLoading;
+  final String? error;
+
+  const GroupMemberBottomSheet({
+    super.key,
+    required this.members,
+    required this.isLoading,
+    this.error,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GroupMemberCubit, GroupMemberState>(
-      builder: (context, state) {
-        if (state is GroupMemberLoading) {
-          return const Padding(
-            padding: EdgeInsets.all(20),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (state is GroupMemberLoaded) {
-          return ListView.separated(
-            shrinkWrap: true,
-            itemCount: state.members.length,
-            separatorBuilder: (_, __) => const Divider(),
-            itemBuilder: (context, index) {
-              final member = state.members[index];
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(member.company.profileImage),
-                ),
-                title: Text(member.company.name),
-                subtitle: Text(member.memberRole),
-              );
-            },
-          );
-        } else if (state is GroupMemberError) {
-          return Padding(
-            padding: const EdgeInsets.all(20),
-            child: Center(child: Text('Hata: ${state.message}')),
-          );
-        }
+    if (isLoading) {
+      return const Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
 
-        return const SizedBox(); // initial durum
+    if (error != null) {
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(child: Text('Hata: $error')),
+      );
+    }
+
+    if (members == null || members!.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(child: Text('Üye bulunamadı')),
+      );
+    }
+
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: members!.length,
+      separatorBuilder: (_, __) => const Divider(),
+      itemBuilder: (context, index) {
+        final member = members![index];
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(member.company.profileImage),
+          ),
+          title: Text(member.company.name),
+          subtitle: Text(member.memberRole),
+        );
       },
     );
   }

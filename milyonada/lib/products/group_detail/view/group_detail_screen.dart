@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../utils/group_status.dart';
 import '../../utils/member_status.dart';
-import '../cubit/expandable_text_cubit.dart';
 import '../cubit/group_cubit.dart';
-import '../cubit/group_member_cubit.dart';
-import '../cubit/group_member_state.dart';
-import '../cubit/group_state.dart';
-import '../services/group_service.dart';
+import '../cubit/group_state.dart'; 
 import '../widgets/group_member_bottom_sheet.dart';
 
 class GroupDetailScreen extends StatelessWidget {
@@ -155,9 +152,9 @@ class GroupDetailScreen extends StatelessWidget {
                               const SizedBox(height: 16),
                               //Text(group.description),
                               BlocProvider(
-                                create: (_) => ExpandableTextCubit(),
-                                child: BlocBuilder<ExpandableTextCubit, bool>(
-                                  builder: (context, isExpanded) {
+                                create: (_) => GroupCubit(),
+                                child: BlocBuilder<GroupCubit, GroupState>(
+                                  builder: (context, state) {
                                     final fullText = group.description +
                                         group.description +
                                         group.description;
@@ -168,8 +165,8 @@ class GroupDetailScreen extends StatelessWidget {
                                       children: [
                                         Text(
                                           fullText,
-                                          maxLines: isExpanded ? null : 2,
-                                          overflow: isExpanded
+                                          maxLines:state. isExpanded ? null : 2,
+                                          overflow:state. isExpanded
                                               ? TextOverflow.visible
                                               : TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -186,9 +183,9 @@ class GroupDetailScreen extends StatelessWidget {
                                                     Colors.transparent,
                                               ),
                                               onPressed: () => context
-                                                  .read<ExpandableTextCubit>()
-                                                  .toggle(),
-                                              child: Text(isExpanded
+                                                  .read<GroupCubit>()
+                                                  .expandebleToogle(),
+                                              child: Text(state.isExpanded
                                                   ? 'Gizle'
                                                   : 'Devamını Gör'),
                                             ),
@@ -209,6 +206,10 @@ class GroupDetailScreen extends StatelessWidget {
                                   Text('${group.admins.length} üye'),
                                   TextButton(
                                     onPressed: () {
+                                      context
+                                          .read<GroupCubit>()
+                                          .fetchMembers(group.id ?? 0);
+
                                       showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,
@@ -216,34 +217,14 @@ class GroupDetailScreen extends StatelessWidget {
                                           borderRadius: BorderRadius.vertical(
                                               top: Radius.circular(16)),
                                         ),
-                                        builder: (context) {
-                                          return BlocProvider(
-                                            create: (_) =>
-                                                GroupMemberCubit(GroupService())
-                                                  ..fetchMembers(group.id ?? 0),
-                                            child: BlocBuilder<GroupMemberCubit,
-                                                GroupMemberState>(
-                                              builder: (context, state) {
-                                                if (state
-                                                    is GroupMemberLoading) {
-                                                  return const Center(
-                                                      child:
-                                                          CircularProgressIndicator());
-                                                } else if (state
-                                                    is GroupMemberLoaded) {
-                                                  return GroupMemberBottomSheet(
-                                                      members: state.members);
-                                                } else if (state
-                                                    is GroupMemberError) {
-                                                  return Center(
-                                                      child:
-                                                          Text(state.message));
-                                                } else {
-                                                  return const SizedBox
-                                                      .shrink();
-                                                }
-                                              },
-                                            ),
+                                        builder: (_) {
+                                          final groupState =
+                                              context.read<GroupCubit>().state;
+                                          return GroupMemberBottomSheet(
+                                            members: groupState.members,
+                                            isLoading:
+                                                groupState.isMembersLoading,
+                                            error: groupState.membersError,
                                           );
                                         },
                                       );
@@ -256,7 +237,7 @@ class GroupDetailScreen extends StatelessWidget {
                                       textStyle: const TextStyle(fontSize: 14),
                                     ),
                                     child: const Text('Üyeleri Gör'),
-                                  ),
+                                  )
                                 ],
                               ),
 

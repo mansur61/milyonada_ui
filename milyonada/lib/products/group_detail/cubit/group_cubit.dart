@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../utils/group_status.dart';
 import '../../utils/member_status.dart';
 import '../model/group.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -51,6 +52,10 @@ class GroupCubit extends Cubit<GroupState> {
     }
   }
 
+  expandebleToogle() {
+    emit(state.copyWith(isExpanded: !state.isExpanded));
+  }
+
   Future<void> toggleJoin() async {
     if (state.isLoading || state.group == null) return;
 
@@ -68,16 +73,15 @@ class GroupCubit extends Cubit<GroupState> {
         memberStatus: MemberStatus.NONE,
       );
 
-      emit(state.copyWith(group: leaveGroup
-      ,isJoined: true, isLoading: false,
-      
+      emit(state.copyWith(
+        group: leaveGroup,
+        isJoined: true,
+        isLoading: false,
       ));
-      //grpService.leaveGroup(state.group!)
     } else {
       final result = await grpService.joinGroup(state.group!);
 
       if (result.success && result.data == true) {
-
         final invitedGroup = updatedGroup.copyWith(
           memberStatus: MemberStatus.INVITED,
         );
@@ -90,16 +94,40 @@ class GroupCubit extends Cubit<GroupState> {
       } else {
         debugPrint("Join/Leave failed: ${result.message}");
         emit(state.copyWith(isLoading: false));
-        
+
         final leaveGroup = state.group!.copyWith(
-        memberStatus: MemberStatus.NONE,
-      );
-         emit(state.copyWith(
-          group:leaveGroup ,
+          memberStatus: MemberStatus.NONE,
+        );
+        emit(state.copyWith(
+          group: leaveGroup,
           isJoined: true,
           isLoading: false,
         ));
       }
+    }
+  }
+
+  Future<void> fetchMembers(int groupId) async {
+    emit(state.copyWith(isMembersLoading: true, membersError: null));
+
+    try {
+      final result = await grpService.getMembersByGroupId(groupId);
+      if (result.success ?? false) {
+        emit(state.copyWith(
+          members: result.data,
+          isMembersLoading: false,
+        ));
+      } else {
+        emit(state.copyWith(
+          isMembersLoading: false,
+          membersError: result.message,
+        ));
+      }
+    } catch (_) {
+      emit(state.copyWith(
+        isMembersLoading: false,
+        membersError: 'Üyeler yüklenemedi',
+      ));
     }
   }
 }
