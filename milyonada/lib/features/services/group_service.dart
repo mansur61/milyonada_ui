@@ -1,6 +1,6 @@
  
-import 'package:milyonada/products/group/model/group.dart';
-import 'package:milyonada/products/group/services/interface/i_group_service.dart';
+import 'package:milyonada/features/model/group.dart';
+import 'package:milyonada/features/services/interface/i_group_service.dart';
 
 import '../model/api_list_response_model.dart';
 import '../model/api_response_model.dart';

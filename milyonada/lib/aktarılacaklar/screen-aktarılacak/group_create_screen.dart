@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/group_create/group_create_bloc.dart';
-import '../bloc/group_create/group_create_event.dart';
-import '../bloc/group_create/group_create_state.dart';
+import '../bloc-aktarılacak/group_create/group_create_bloc.dart';
+import '../bloc-aktarılacak/group_create/group_create_event.dart';
+import '../bloc-aktarılacak/group_create/group_create_state.dart';
 import 'widgets/group_privacy_option.dart';
 
 class GroupCreateScreen extends StatelessWidget {

@@ -1,6 +1,6 @@
-import '../../../utils/group_status.dart';
-import '../../model/group.dart';
-import '../../model/group_mmeber.dart';
+import '../../utils/group_status.dart';
+import '../../../features/model/group.dart';
+import '../../../features/model/group_mmeber.dart';
 
 class GroupState {
   final Group? group;

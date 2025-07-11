@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/group_profile/group_profile_bloc.dart';
-import '../bloc/group_profile/group_profile_event.dart';
-import '../bloc/group_profile/group_profile_state.dart';
+import '../bloc-aktarılacak/group_profile/group_profile_bloc.dart';
+import '../bloc-aktarılacak/group_profile/group_profile_event.dart';
+import '../bloc-aktarılacak/group_profile/group_profile_state.dart';
 
 class GroupProfileEditScreen extends StatelessWidget {
   @override

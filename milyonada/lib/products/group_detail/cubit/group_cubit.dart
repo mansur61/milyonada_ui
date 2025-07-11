@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../utils/group_status.dart';
-import '../../../utils/member_status.dart';
-import '../../model/group.dart';
+import '../../utils/group_status.dart';
+import '../../utils/member_status.dart';
+import '../../../features/model/group.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-import '../../services/group_service.dart';
+import '../../../features/services/group_service.dart';
 import 'group_state.dart';
 
 class GroupCubit extends Cubit<GroupState> {

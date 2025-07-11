@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/member_management/member_management_bloc.dart';
-import '../bloc/member_management/member_management_event.dart';
-import '../bloc/member_management/member_management_state.dart';
+import '../bloc-aktarılacak/member_management/member_management_bloc.dart';
+import '../bloc-aktarılacak/member_management/member_management_event.dart';
+import '../bloc-aktarılacak/member_management/member_management_state.dart';
 
 class MemberScreen extends StatelessWidget {
   const MemberScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../group/model/api_list_response_model.dart';
-import '../group/model/api_response_model.dart'; 
+import '../features/model/api_list_response_model.dart';
+import '../features/model/api_response_model.dart'; 
 
 abstract class IHttpService {
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters});

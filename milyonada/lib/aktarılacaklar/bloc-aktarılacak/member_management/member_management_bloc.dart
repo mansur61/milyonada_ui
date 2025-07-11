@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../model/member.dart'; 
+import '../../model-aktarılacak/member.dart'; 
 import 'member_management_event.dart';
 import 'member_management_state.dart';
 

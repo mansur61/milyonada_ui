@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/group_share/group_share_bloc.dart';
-import '../bloc/group_share/group_share_event.dart';
-import '../bloc/group_share/group_share_state.dart'; 
+import '../bloc-aktarılacak/group_share/group_share_bloc.dart';
+import '../bloc-aktarılacak/group_share/group_share_event.dart';
+import '../bloc-aktarılacak/group_share/group_share_state.dart'; 
 
 class GroupShareScreen extends StatelessWidget {
   const GroupShareScreen({super.key});

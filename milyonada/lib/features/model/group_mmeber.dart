@@ -1,4 +1,4 @@
-import '../../utils/member_status.dart';
+import '../../products/utils/member_status.dart';
 import 'company.dart';
  
 

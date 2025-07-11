@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; 
-import 'bloc/member_management/member_management_bloc.dart';
-import 'bloc/member_management/member_management_event.dart'; 
-import 'products/group/group_discovery/view/group_discovery_screen.dart';
-import 'screen/group_create_screen.dart';   
+import 'products/group_detail/cubit/group_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,14 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-         BlocProvider(create: (_) => MemberBloc()..add(LoadMembers())), // ✅ EKLENDİ
-
-        // Diğer bloclar eklenebilir
+        BlocProvider(create: (_) => GroupCubit()..loadGroup()),
+        
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Grup Uygulaması',
-        initialRoute: '/',
+        /*initialRoute: '/',
         routes: {
           '/': (context) => 
           //GroupDetailScreen()
@@ -33,7 +29,7 @@ class MyApp extends StatelessWidget {
            //ProfileScreen(),
           '/create': (context) => const GroupCreateScreen(),
           // diğer sayfalar buraya eklenebilir
-        },
+        },*/
       ),
     );
   }

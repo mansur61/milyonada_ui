@@ -1,5 +1,5 @@
  
-import '../../model/member.dart';
+import '../../model-aktarılacak/member.dart';
 
 abstract class MemberState {}
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/group_manager/group_manager_bloc.dart';
-import '../bloc/group_manager/group_manager_event.dart';
-import '../bloc/group_manager/group_manager_state.dart'; 
+import '../bloc-aktarılacak/group_manager/group_manager_bloc.dart';
+import '../bloc-aktarılacak/group_manager/group_manager_event.dart';
+import '../bloc-aktarılacak/group_manager/group_manager_state.dart'; 
 
 class GroupManagementScreen extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();

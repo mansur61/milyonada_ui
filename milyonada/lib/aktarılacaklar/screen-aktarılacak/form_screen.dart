@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/basvuru_form/form_bloc.dart';
-import '../bloc/basvuru_form/form_event.dart';
+import '../bloc-aktarılacak/basvuru_form/form_bloc.dart';
+import '../bloc-aktarılacak/basvuru_form/form_event.dart';
  
 class FormScreen extends StatelessWidget {
   const FormScreen({super.key});

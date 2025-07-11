@@ -1,5 +1,5 @@
-import '../../utils/group_type.dart';
-import '../../utils/member_status.dart';
+import '../../products/utils/group_type.dart';
+import '../../products/utils/member_status.dart';
 import 'category.dart';  
 import 'mederator.dart'; 
 
