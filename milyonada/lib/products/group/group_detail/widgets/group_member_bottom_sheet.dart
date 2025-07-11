@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/group_mmeber.dart'; 
+import '../../model/group_mmeber.dart'; 
 
 class GroupMemberBottomSheet extends StatelessWidget {
   final List<GroupMember>? members;

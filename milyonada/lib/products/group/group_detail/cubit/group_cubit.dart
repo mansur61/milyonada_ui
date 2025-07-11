@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../utils/group_status.dart';
-import '../../utils/member_status.dart';
-import '../model/group.dart';
+import '../../../utils/group_status.dart';
+import '../../../utils/member_status.dart';
+import '../../model/group.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-import '../services/group_service.dart';
+import '../../services/group_service.dart';
 import 'group_state.dart';
 
 class GroupCubit extends Cubit<GroupState> {
@@ -25,7 +25,13 @@ class GroupCubit extends Cubit<GroupState> {
 
   Future<List<Group>> loadGroups() async {
     final groupList = await grpService.getGroups();
-    return groupList.data ?? [];
+    if (groupList.data != null) {
+      emit(state.copyWith(groups: groupList.data, isGroupsLoading: true));
+      return groupList.data!;
+    } else {
+      emit(state.copyWith(groups: [], isGroupsLoading: false));
+      return [];
+    }
   }
 
   Future<List<Group>> loadGroupsFromAssets() async {

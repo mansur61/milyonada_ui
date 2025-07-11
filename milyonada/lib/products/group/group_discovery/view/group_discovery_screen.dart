@@ -1,5 +1,8 @@
-/*import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../group_detail/cubit/group_cubit.dart';
+import '../../group_detail/cubit/group_state.dart'; 
 
 class GroupDiscoveryScreen extends StatelessWidget {
   const GroupDiscoveryScreen({super.key});
@@ -45,9 +48,9 @@ class GroupDiscoveryScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: BlocBuilder<GroupBloc, GroupState>(
+              child: BlocBuilder<GroupCubit, GroupState>(
                 builder: (context, state) {
-                  if (state is GroupLoaded) {
+                  if (state.isGroupsLoading) {
                     return Column(
                       children: [
                         // Filtre butonu sağa yaslı
@@ -68,40 +71,40 @@ class GroupDiscoveryScreen extends StatelessWidget {
                         // Liste
                         Expanded(
                           child: ListView.builder(
-                            itemCount: state.groups.length,
+                            itemCount: state.groups?.length,
                             itemBuilder: (context, index) {
-                              final group = state.groups[index];
+                              final group = state.groups?[index];
                               return ListTile(
                                 leading: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(
-                                    group.imageUrl,
+                                    group?.imageUrl ?? "",
                                     width: 60,
                                     height: 60,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                title: Text(group.name,
+                                title: Text(group?.name ?? "",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold)),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(group.description),
+                                    Text(group?.description ?? ""),
                                     const SizedBox(height: 4),
                                     Row(
                                       children: [
                                         const Icon(Icons.person, size: 14),
                                         const SizedBox(width: 4),
-                                        Text("${group.members} üye"),
+                                        Text("${group?.admins.length} üye"),
                                       ],
                                     ),
                                   ],
                                 ),
-                                trailing: ElevatedButton(
+                               /* trailing: ElevatedButton(
                                   onPressed: () {},
                                   child: Text(group.buttonText),
-                                ),
+                                ),*/
                               );
                             },
                           ),
@@ -119,4 +122,3 @@ class GroupDiscoveryScreen extends StatelessWidget {
     );
   }
 }
-*/

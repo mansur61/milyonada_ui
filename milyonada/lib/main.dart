@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; 
 import 'bloc/member_management/member_management_bloc.dart';
-import 'bloc/member_management/member_management_event.dart';
-import 'screen/form_screen.dart';
-import 'screen/group_create_screen.dart';
-import 'products/group_detail/view/group_detail_screen.dart';
-import 'screen/group_discovery_screen.dart';
-import 'screen/group_management_screen.dart';
-import 'screen/group_profile_edit_screen.dart';
-import 'screen/group_share_screen.dart'; 
-import 'screen/member_management_screen.dart';
-import 'screen/profile_screen.dart'; 
+import 'bloc/member_management/member_management_event.dart'; 
+import 'products/group/group_discovery/view/group_discovery_screen.dart';
+import 'screen/group_create_screen.dart';   
 
 void main() {
   runApp(const MyApp());
@@ -35,8 +28,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => 
           //GroupDetailScreen()
           //GroupManagementScreen(),
-         // GroupDiscoveryScreen(),
-           GroupDetailScreen(),
+          GroupDiscoveryScreen(),
+         //  GroupDetailScreen(),
            //ProfileScreen(),
           '/create': (context) => const GroupCreateScreen(),
           // diğer sayfalar buraya eklenebilir
